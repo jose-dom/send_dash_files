@@ -109,5 +109,6 @@ def email_plot(children, n_clicks, email):
         # success message to user
         success_msg = "Email of figure sent to " + str(email)
         return html.P(success_msg)
-
-app.run_server(debug=True)
+        
+if __name__ == "__main__":
+    app.run_server(debug=True)

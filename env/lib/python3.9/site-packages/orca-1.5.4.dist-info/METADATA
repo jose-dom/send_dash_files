@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: orca
+Version: 1.5.4
+Summary: A pipeline orchestration tool with Pandas support
+Home-page: https://github.com/udst/orca
+Author: UrbanSim Inc.
+Author-email: info@urbansim.com
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: BSD License
+Requires-Dist: pandas (>=0.15.0)
+Requires-Dist: toolz (>=0.8.1)
+Requires-Dist: tables (<3.6,>=3.1) ; python_version < "3.6"
+Requires-Dist: tables (<3.7,>=3.1) ; python_version >= "3.6"
+Provides-Extra: server
+Requires-Dist: flask (>=0.10) ; extra == 'server'
+Requires-Dist: pygments (>=2.0) ; extra == 'server'
+Requires-Dist: six (>=1.9.0) ; extra == 'server'
+
+.. image:: https://coveralls.io/repos/UDST/orca/badge.svg?branch=master
+  :target: https://coveralls.io/r/UDST/orca?branch=master
+  :alt: Coverage
+
+Orca
+====
+
+Orca is a Python library for task orchestration. It's designed for workflows like city simulation, where the data representing a model's state is so large that it needs to be managed outside of the task graph.
+
+The building blocks of a workflow are "steps", Python functions that can be assembled on the fly into linear or cyclical pipelines. Steps typically interact with a central data store that persists in memory while the pipeline runs. Derived tables and columns can be updated automatically as base data changes, and pipeline components are evaluated lazily to reduce unnecessary overhead.
+
+Orca is used in `UrbanSim <https://github.com/udst/urbansim>`__ and other projects.
+
+Documentation
+-------------
+
+- `udst.github.io/orca/ <https://udst.github.io/orca/>`__
+
+Installation
+------------
+
+- ``pip install orca``
+- ``conda install orca --channel conda-forge``
+
+

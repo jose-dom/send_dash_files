@@ -27,7 +27,7 @@ fig = go.Figure(
     layout_title_text="Native Plotly rendering in Dash"
 )
 
-app = dash.Dash(__name__)
+app = dash.Dash( __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 
 app.layout = html.Div(
     children = [

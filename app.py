@@ -4,7 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
-import plotly.io as pio
+from plotly.io import write_image
 from IPython.display import HTML, Image
 from email.message import EmailMessage
 import os

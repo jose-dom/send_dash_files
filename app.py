@@ -29,6 +29,8 @@ fig = go.Figure(
 
 app = dash.Dash( __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}])
 
+server = app.server
+
 app.layout = html.Div(
     children = [
     dcc.Graph(id="graph", figure=fig),
@@ -109,6 +111,6 @@ def email_plot(children, n_clicks, email):
         # success message to user
         success_msg = "Email of figure sent to " + str(email)
         return html.P(success_msg)
-        
+
 if __name__ == "__main__":
     app.run_server(debug=True)

@@ -16,9 +16,18 @@ from email.mime.image import MIMEImage
 import base64
 import pandas as pd
 import pathlib
+import boto3
+import requests   
 
+# s3 resource
+s3 = boto3.resource(
+    service_name='s3',
+    region_name=os.environ.get("AWS_DEFAULT_REGION"),
+    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+)
+bucket = s3.Bucket(os.environ.get("AWS_BUCKET_NAME")) 
 df = pd.read_csv('solar.csv')
-
 
 if not os.path.exists("files"):
     os.mkdir("files")
@@ -71,12 +80,14 @@ def email_plot(children, n_clicks, email):
                 path = f"{DATA_PATH}/fig{i}.png"
                 fig = go.Figure(fig_dict).write_image(path)
                 charts.append(path)
+                bucket.upload_file(Filename=path, Key=os.path.basename(path))
             elif ("columns" in obj):
                 tbl_data = children[i]["props"]["data"]
                 path = f"{DATA_PATH}/table{i}.csv"
                 print(path)
                 tbl = pd.DataFrame.from_dict(tbl_data).to_csv(path, index=False)
                 charts.append(path)
+                bucket.upload_file(Filename=path, Key=os.path.basename(path))
 
         # generating email info
         me  = os.environ.get("EMAIL_USER")
@@ -103,8 +114,8 @@ def email_plot(children, n_clicks, email):
         for i in charts:
             # removing "files/" path from name
             file_name = os.path.basename(i)
-            with open(i, "rb") as file:
-                msg.attach(MIMEApplication(file.read(), Name=file_name))
+            get_file = bucket.Object(file_name).get()["Body"]
+            msg.attach(MIMEApplication(get_file.read(), Name=file_name))
         
         # send email
         server = smtplib.SMTP(email_server_host, port)

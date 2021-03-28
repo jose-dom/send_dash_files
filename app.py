@@ -15,12 +15,17 @@ from email.mime.application import MIMEApplication
 from email.mime.image import MIMEImage
 import base64
 import pandas as pd
+import pathlib
 
 df = pd.read_csv('solar.csv')
 
 
 if not os.path.exists("files"):
     os.mkdir("files")
+
+
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("files").resolve()
 
 fig = go.Figure(
     data=[go.Bar(y=[2, 1, 3])],
@@ -63,12 +68,13 @@ def email_plot(children, n_clicks, email):
             obj = list(children[i]["props"].keys())
             if ("figure" in obj):
                 fig_dict = children[i]["props"]["figure"]
-                path = f"files/fig{i}.png"
+                path = f"{DATA_PATH}/fig{i}.png"
                 fig = go.Figure(fig_dict).write_image(path)
                 charts.append(path)
             elif ("columns" in obj):
                 tbl_data = children[i]["props"]["data"]
-                path = f"files/table{i}.csv"
+                path = f"{DATA_PATH}/table{i}.csv"
+                print(path)
                 tbl = pd.DataFrame.from_dict(tbl_data).to_csv(path, index=False)
                 charts.append(path)
 
@@ -96,7 +102,7 @@ def email_plot(children, n_clicks, email):
         # for each file attach to the message with a name
         for i in charts:
             # removing "files/" path from name
-            file_name = i[6:len(i)]
+            file_name = os.path.basename(i)
             with open(i, "rb") as file:
                 msg.attach(MIMEApplication(file.read(), Name=file_name))
         

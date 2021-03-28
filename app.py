@@ -113,4 +113,4 @@ def email_plot(children, n_clicks, email):
         return html.P(success_msg)
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host='localhost', port=8000)
